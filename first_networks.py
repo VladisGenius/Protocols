@@ -13,7 +13,6 @@ def is_grey_ip(ip):
     return any(re.match(pattern, ip) for pattern in patterns)
 
 def resolve_host(host: str):
-    """Разрешает доменное имя в IP адрес с обработкой ошибок"""
     try:
         return socket.gethostbyname(host)
     except socket.gaierror:
@@ -78,25 +77,18 @@ def print_results(host):
 
 def __main__():
     while True:
-        try:
-            host = input("\nВведите домен/IP (или 'q' для выхода): ").strip()
-            if host.lower() == 'q':
-                break
-
-            if re.match(r"\d+\.\d+\.\d+\.\d+", host):
-                target = host
-            else:
-                target = resolve_host(host)
-                if not target:
-                    continue
-
-            print_results(target)
-
-        except KeyboardInterrupt:
-            print("\nЗавершение программы...")
+        host = input("\nВведите домен/IP (или 'q' для выхода): ").strip()
+        if host.lower() == 'q':
             break
-        except Exception as e:
-            print(f"ошибка: {str(e)}")
+
+        if re.match(r"\d+\.\d+\.\d+\.\d+", host):
+            target = host
+        else:
+            target = resolve_host(host)
+            if not target:
+                continue
+
+        print_results(target)
 
 
 if __name__ == '__main__':
